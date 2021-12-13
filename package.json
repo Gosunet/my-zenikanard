@@ -12,7 +12,9 @@
     "url": "https://github.com/zenika-open-source/my-zenikanard/issues"
   },
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "start": "yarn workspace @pimpmyduck/app start",
     "build": "yarn workspace @pimpmyduck/app build",

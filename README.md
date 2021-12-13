@@ -1,21 +1,15 @@
-![Pimp my duck](./packages/assets/design/hero.png)
+# Basic Sample Hardhat Project
 
-[![License: Apache-2.0](https://img.shields.io/github/license/zenika-open-source/my-zenikanard)](https://github.com/zenika-open-source/my-zenikanard/blob/master/LICENSE) [![Netlify Status](https://api.netlify.com/api/v1/badges/90c60f41-f3ec-46f6-88c2-26cc6257b6aa/deploy-status)](https://app.netlify.com/sites/zenikanard/deploys)
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
 
-## Official app
+Try running some of the following tasks:
 
-Play on **[https://pimpmyduck.zenika.com](https://pimpmyduck.zenika.com)**.
-
-## Contributing
-
-Contributions, issues and feature requests are welcome! Feel free to check [issues page](https://github.com/zenika-open-source/my-zenikanard/issues).
-
-See the [Asset proposal documentation](./proposals/README.md), if you want to add a new asset to Pimp My Duck.
-
-All development instructions are explained in the [contributing guide](./.github/CONTRIBUTING.md).
-
-## License
-
-This project is [Apache-2.0](https://github.com/zenika-open-source/my-zenikanard/blob/master/LICENSE) licensed.<br />
-Copyright © 2020 [Zenika](https://oss.zenika.com).
-![with love by zenika](https://img.shields.io/badge/With%20%E2%9D%A4%EF%B8%8F%20by-Zenika-b51432.svg?link=https://oss.zenika.com)
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+node scripts/sample-script.js
+npx hardhat help
+```
