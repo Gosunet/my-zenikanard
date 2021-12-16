@@ -2,6 +2,7 @@ import React, { useState, useRef, Suspense } from 'react'
 import cn from 'classnames'
 import svgExport from 'save-svg-as-png'
 import { getAsset } from './assets'
+import { ethers } from "ethers";
 import {
   layers,
   Layer,
@@ -19,12 +20,17 @@ import { ReactComponent as Netlify } from './icons/netlify.svg'
 import AssetButton from './components/AssetButton'
 import UpdateApp from './components/UpdateApp'
 import Web3Connector from './components/Web3Connector'
+import Mint from './components/Mint'
 
 import { Web3ReactProvider } from '@web3-react/core'
 import Web3 from 'web3'
 
 import useAssets from './useAssets'
 import styles from './App.module.css'
+
+import myEpicNft from './abi/CryptoDuck.json';
+
+declare const window: any;
 
 function App() {
   const svgElement = useRef<SVGSVGElement>(null)
@@ -42,6 +48,33 @@ function App() {
     svgExport.saveSvgAsPng(svgElement?.current, 'zenikanard.png')
   }
 
+  const askContractToMintNft = async () => {
+    const CONTRACT_ADDRESS = "0x6864cDe0A40Ed1E172BF9EfC507881D0477cB93c";
+  
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myEpicNft.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
+        let nftTxn = await connectedContract.makeAnEpicNFT();
+  
+        console.log("Mining...please wait.")
+        await nftTxn.wait();
+        
+        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
+  
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }  
+
   return (
     <Web3ReactProvider getLibrary={(provider) => new Web3(provider)}>
       <div className={styles.app}>
@@ -49,6 +82,7 @@ function App() {
 
         <div className={styles.header}>
           <Web3Connector />
+          <button onClick={askContractToMintNft} className={styles.mintButton}>Mint NFT</button>
           <div className={styles.title}>
             Pimp My <span className={styles.titleInner}>Duck</span>
             <ByZenika className={styles.byZenika} />
@@ -140,6 +174,16 @@ function App() {
               aria-label="Download"
             >
               <Download height="24px" width="24px" />
+            </button>
+            <button
+              className={styles.circle}
+              onClick={download}
+              title="Mint"
+              aria-label="Mint"
+            >
+              <Mint
+              //  height="24px" width="24px" 
+               />
             </button>
           </div>
           <UpdateApp />

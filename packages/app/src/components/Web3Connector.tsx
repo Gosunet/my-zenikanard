@@ -1,11 +1,11 @@
 import React, { useMemo, useEffect, FC, Suspense } from 'react'
+import Web3 from 'web3'
 
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { Web3WalletButton } from './Web3WalletButton'
 
 import styles from './Web3Connector.module.css'
-import { connect } from 'http2'
 
 const Web3Connector = () => {
   const AVALANCHE_TESTNET_PARAMS = {
@@ -19,12 +19,27 @@ const Web3Connector = () => {
     rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
     blockExplorerUrls: ['https://cchain.explorer.avax-test.network/'],
   }
+  
+  const ETHEREUM_TESTNET_PARAMS = {
+    chainId: '0x4',
+    chainName: 'Ethereum Rinkerby',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    blockExplorerUrls: ['https://rinkey.etherscan.io'],
+  }
 
   const injected = new InjectedConnector({
-    supportedChainIds: [parseInt(AVALANCHE_TESTNET_PARAMS.chainId, 16)],
+    supportedChainIds: [ parseInt(ETHEREUM_TESTNET_PARAMS.chainId, 16), parseInt(AVALANCHE_TESTNET_PARAMS.chainId, 16)],
   })
 
-  const { active, connector, activate, deactivate, error } = useWeb3React()
+  const { active, connector, activate, deactivate, error, library } = useWeb3React<Web3>()
+  console.log(library)
+
+  
 
   async function connect() {
     try {
@@ -46,21 +61,22 @@ const Web3Connector = () => {
     return error instanceof UnsupportedChainIdError
   }, [error])
 
-  useEffect(() => {
-    if (isUnsupportedChainIdError) {
-      console.log('useEffect called')
-      injected.getProvider().then((provider) => {
-        provider
-          .request({
-            method: 'wallet_addEthereumChain',
-            params: [AVALANCHE_TESTNET_PARAMS],
-          })
-          .catch((error: any) => {
-            console.log(error)
-          })
-      })
-    }
-  }, [AVALANCHE_TESTNET_PARAMS, connector, injected, isUnsupportedChainIdError])
+  // Working with Rinkerby now
+  // useEffect(() => {
+  //   if (isUnsupportedChainIdError) {
+  //     console.log('useEffect called')
+  //     injected.getProvider().then((provider) => {
+  //       provider
+  //         .request({
+  //           method: 'wallet_addEthereumChain',
+  //           params: [AVALANCHE_TESTNET_PARAMS],
+  //         })
+  //         .catch((error: any) => {
+  //           console.log(error)
+  //         })
+  //     })
+  //   }
+  // }, [AVALANCHE_TESTNET_PARAMS, connector, injected, isUnsupportedChainIdError])
 
   return (
     <div className={styles.connector}>

@@ -72,6 +72,11 @@
   align-items: center;
 }
 
+.mintButton {
+  position: absolute;
+  z-index: 5;
+}
+
 .categories {
   position: absolute;
 }
