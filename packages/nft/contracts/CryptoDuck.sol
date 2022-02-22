@@ -23,7 +23,7 @@ contract CryptoDuck is ERC721URIStorage {
   }
 
   // A function our user will hit to get their NFT.
-  function makeAnEpicNFT() public {
+  function makeAnEpicNFT(string memory srcTokenUri) public {
      // Get the current tokenId, this starts at 0.
     uint256 newItemId = _tokenIds.current();
 
@@ -35,7 +35,7 @@ contract CryptoDuck is ERC721URIStorage {
         bytes(
             string(
                 abi.encodePacked(
-                    '{"name": "Crypto Duck", "description": "A magnificent crypto duck.", "image": "https://theduckgallery.zenika.com/ducks/JuliaLehoux.png"}'
+                    '{"name": "Crypto Duck", "description": "A magnificent crypto duck.", "image": "', srcTokenUri, '"}'
                 )
             )
         )

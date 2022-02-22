@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC } from 'react'
 import styles from '../App.module.css'
 import { ReactComponent as MintIcon } from '../icons/nft.svg'
 import myEpicNft from '../abi/CryptoDuck.json'
@@ -10,11 +10,11 @@ declare const window: any
 type MintProps = { svgRef: React.RefObject<SVGSVGElement> }
 
 export const Mint: FC<MintProps> = ({ svgRef }) => {
-  const CONTRACT_ADDRESS = '0x6864cDe0A40Ed1E172BF9EfC507881D0477cB93c'
+  const CONTRACT_ADDRESS = '0x71255e09278411849A43Ceda5F75E35840BF0f42'
 
   const askContractToMintNft = async () => {
     try {
-      const svg = await svgExport.svgAsDataUri(svgRef?.current)
+      const svg: string = await svgExport.svgAsDataUri(svgRef?.current)
 	  console.log(svg)
 
       const { ethereum } = window
@@ -29,7 +29,7 @@ export const Mint: FC<MintProps> = ({ svgRef }) => {
         )
 
         console.log('Going to pop wallet now to pay gas...')
-        let nftTxn = await connectedContract.makeAnEpicNFT()
+        let nftTxn = await connectedContract.makeAnEpicNFT("https://theduckgallery.zenika.com/ducks/JuliaLehoux.png")
 
         console.log('Mining...please wait.')
         await nftTxn.wait()

@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, FC, Suspense } from 'react'
+import React, { useMemo } from 'react'
 import Web3 from 'web3'
 
 import { InjectedConnector } from '@web3-react/injected-connector'
@@ -36,7 +36,7 @@ const Web3Connector = () => {
     supportedChainIds: [ parseInt(ETHEREUM_TESTNET_PARAMS.chainId, 16), parseInt(AVALANCHE_TESTNET_PARAMS.chainId, 16)],
   })
 
-  const { active, connector, activate, deactivate, error, library } = useWeb3React<Web3>()
+  const { active, activate, deactivate, error, library } = useWeb3React<Web3>()
   console.log(library)
 
   
