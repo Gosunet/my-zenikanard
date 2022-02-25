@@ -4,6 +4,35 @@ import { ReactComponent as MintIcon } from '../icons/nft.svg'
 import myEpicNft from '../abi/CryptoDuck.json'
 import svgExport from 'save-svg-as-png'
 import { ethers } from 'ethers'
+import axios from 'axios'
+
+const pinataClient = axios.create({
+  baseURL: 'https://api.pinata.cloud/',
+  headers: {
+    'Content-Type': 'application/json',
+   
+  },
+})
+
+const uploadSvgToPIPFS = async ({ svg, name }: { svg: Blob; name: string }) => {
+  const formData = new FormData()
+  formData.append('file', svg)
+  console.log("data", formData.get("file"))
+
+  formData.append(
+    'pinataMetadata',
+    JSON.stringify({
+      name,
+    })
+  )
+  const { data } = await pinataClient.post('pinning/pinFileToIPFS', formData, {
+    maxBodyLength: Infinity,
+    headers: {
+      'Content-Type': `multipart/form-data;`,
+    },
+  })
+  return data.IpfsHash
+}
 
 declare const window: any
 
@@ -13,9 +42,25 @@ export const Mint: FC<MintProps> = ({ svgRef }) => {
   const CONTRACT_ADDRESS = '0x71255e09278411849A43Ceda5F75E35840BF0f42'
 
   const askContractToMintNft = async () => {
+    console.log('Minting NFT')
+
     try {
-      const svg: string = await svgExport.svgAsDataUri(svgRef?.current)
-	  console.log(svg)
+      if (!svgRef.current) {
+        throw new Error('No SVG')
+      }
+      const svg = await svgExport.prepareSvg(svgRef.current, {
+        excludeCss: true,
+      })
+      console.log(svg.src)
+
+      const svgBlob: Blob = new Blob([svg.src], {
+        type: 'image/svg+xml',
+      })
+      console.log(await svgBlob.text())
+      // call ipfs
+      const cid = await uploadSvgToPIPFS({ svg: svgBlob, name: `nft ${new Date().toISOString()}` })
+      console.log({ cid })
+      
 
       const { ethereum } = window
 
@@ -29,7 +74,7 @@ export const Mint: FC<MintProps> = ({ svgRef }) => {
         )
 
         console.log('Going to pop wallet now to pay gas...')
-        let nftTxn = await connectedContract.makeAnEpicNFT("https://theduckgallery.zenika.com/ducks/JuliaLehoux.png")
+        let nftTxn = await connectedContract.makeAnEpicNFT(`ipfs://${cid}`)
 
         console.log('Mining...please wait.')
         await nftTxn.wait()
@@ -57,4 +102,4 @@ export const Mint: FC<MintProps> = ({ svgRef }) => {
   )
 }
 
-export default Mint;
+export default Mint

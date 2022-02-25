@@ -26,6 +26,7 @@ import Web3 from 'web3'
 
 import useAssets from './useAssets'
 import styles from './App.module.css'
+import Loader from './components/Loader'
 
 function App() {
   const svgElement = useRef<SVGSVGElement>(null)
@@ -56,6 +57,7 @@ function App() {
           </div>
         </div>
         <main className={styles.main}>
+          {/* <Loader /> */}
           <div className={styles.canvas}>
             <svg
               ref={svgElement}
