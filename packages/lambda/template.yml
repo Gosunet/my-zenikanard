@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Api:
+    # enable CORS; to make more specific, change the origin wildcard
+    # to a particular domain name, e.g. "'www.example.com'"
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+Resources:
+  # ApiGatewayEndpoint:
+  #   Type: 'AWS::Serverless::Api'
+  #   Properties:
+  #     StageName: Prod
+  #     Auth:
+  #       ApiKeyRequired: true
+  #       UsagePlan:
+  #         CreateUsagePlan: PER_API
+  #         UsagePlanName: GatewayAuthorization
+  PinIpfsFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  # Your lambda function
+  PinIpfsFunction:
+    # DependsOn is required to ensure copy is complete before creating the function
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Runtime: nodejs14.x
+      Role: !GetAtt 'PinIpfsFunctionRole.Arn'
+      CodeUri: upload-ipfs/dist
+      Handler: index.handler
+      Events:
+        PinIpfs:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /pinIpfs
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+        - src/index.ts
+        Outfile:
+        - dist/index.js
+        Format: cjs
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  PinIpfsApi:
+    Description: "API Gateway endpoint URL for Prod stage for Crypto Duck function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/pinIpfs/"
+  PinIpfsFunctionRole:
+    Description: "Crypto Duck Lambda Function ARN"
+    Value: !GetAtt PinIpfsFunction.Arn
+  PinIpfsFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt PinIpfsFunction.Arn
+  # ApiKey:
+  #   Description: "You can find your API Key in the AWS console: (Put in the request HEADER as 'x-api-key')"
+  #   Value: !Sub "https://console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/api-keys/${ServerlessRestApiKey}"
+
+

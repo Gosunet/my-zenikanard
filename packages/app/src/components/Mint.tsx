@@ -6,32 +6,25 @@ import svgExport from 'save-svg-as-png'
 import { ethers } from 'ethers'
 import axios from 'axios'
 
-const pinataClient = axios.create({
-  baseURL: 'https://api.pinata.cloud/',
-  headers: {
-    'Content-Type': 'application/json',
-   
-  },
-})
-
-const uploadSvgToPIPFS = async ({ svg, name }: { svg: Blob; name: string }) => {
-  const formData = new FormData()
-  formData.append('file', svg)
-  console.log("data", formData.get("file"))
-
-  formData.append(
-    'pinataMetadata',
-    JSON.stringify({
-      name,
-    })
+const uploadSvgToPIPFS = async ({
+  svg,
+  name,
+}: {
+  svg: string
+  name: string
+}) => {
+  const res = await axios.post(
+    'https://biirzzx75m.execute-api.eu-west-3.amazonaws.com/Prod/pinIpfs/',
+    JSON.stringify({ name, rawSvg: svg }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': `${process.env.AWS_APIKEY}`,
+      },
+    }
   )
-  const { data } = await pinataClient.post('pinning/pinFileToIPFS', formData, {
-    maxBodyLength: Infinity,
-    headers: {
-      'Content-Type': `multipart/form-data;`,
-    },
-  })
-  return data.IpfsHash
+
+  return res.data.cid
 }
 
 declare const window: any
@@ -51,16 +44,12 @@ export const Mint: FC<MintProps> = ({ svgRef }) => {
       const svg = await svgExport.prepareSvg(svgRef.current, {
         excludeCss: true,
       })
-      console.log(svg.src)
 
-      const svgBlob: Blob = new Blob([svg.src], {
-        type: 'image/svg+xml',
+      const cid = await uploadSvgToPIPFS({
+        svg: svg.src,
+        name: `nft ${new Date().toISOString()}`,
       })
-      console.log(await svgBlob.text())
-      // call ipfs
-      const cid = await uploadSvgToPIPFS({ svg: svgBlob, name: `nft ${new Date().toISOString()}` })
       console.log({ cid })
-      
 
       const { ethereum } = window
 

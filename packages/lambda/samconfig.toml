@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "crypto-duck-2"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1jhfwqfo1owwi"
+s3_prefix = "crypto-duck-2"
+region = "eu-west-3"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

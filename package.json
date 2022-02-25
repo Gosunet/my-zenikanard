@@ -13,16 +13,26 @@
   },
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/lambda/*"
   ],
   "scripts": {
     "start": "yarn workspace @pimpmyduck/app start",
     "build": "yarn workspace @pimpmyduck/app build",
     "test": "yarn test:functions",
-    "test:functions": "yarn workspace @pimpmyduck/functions test"
+    "test:functions": "yarn workspace @pimpmyduck/functions test",
+    "lambda:upload-ipfs:build": "yarn workspace @pimpmyduck/upload-ipfs build",
+    "prelambda:deploy": "yarn lambda:upload-ipfs:build",
+    "lambda:deploy": "sam deploy --template-file=packages/lambda/template.yml"
   },
   "engines": {
     "yarn": ">=1.17.0",
     "node": ">=10.16.0"
-  }
+  },
+  "dependencies": {
+    "typescript": "^4.5.5"
+  },
+  "nohoist": [
+    "packages/lambda/**/*"
+  ]
 }
