@@ -32,6 +32,7 @@ function App() {
   const svgElement = useRef<SVGSVGElement>(null)
   const [selectedLayer, setSelectedLayer] = useState<Layer>(getDefaultLayer())
   const { selectedAssets, addAsset, randomize, reset } = useAssets()
+  const [isLoading, setIsLoading] = useState(false)
 
   const isAssetsSelected = (assetName?: string) => {
     if (!selectedLayer) return false
@@ -57,7 +58,7 @@ function App() {
           </div>
         </div>
         <main className={styles.main}>
-          {/* <Loader /> */}
+          { isLoading ? <Loader /> : null }
           <div className={styles.canvas}>
             <svg
               ref={svgElement}
@@ -145,7 +146,7 @@ function App() {
               <Download height="24px" width="24px" />
             </button>
 
-            <Mint svgRef={svgElement}/>
+            <Mint svgRef={svgElement} setIsLoading={setIsLoading}/>
           </div>
           <UpdateApp />
         </main>

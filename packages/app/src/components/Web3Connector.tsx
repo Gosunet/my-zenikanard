@@ -19,7 +19,7 @@ const Web3Connector = () => {
     rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
     blockExplorerUrls: ['https://cchain.explorer.avax-test.network/'],
   }
-  
+
   const ETHEREUM_TESTNET_PARAMS = {
     chainId: '0x4',
     chainName: 'Ethereum Rinkerby',
@@ -33,13 +33,13 @@ const Web3Connector = () => {
   }
 
   const injected = new InjectedConnector({
-    supportedChainIds: [ parseInt(ETHEREUM_TESTNET_PARAMS.chainId, 16), parseInt(AVALANCHE_TESTNET_PARAMS.chainId, 16)],
+    supportedChainIds: [
+      parseInt(ETHEREUM_TESTNET_PARAMS.chainId, 16),
+      parseInt(AVALANCHE_TESTNET_PARAMS.chainId, 16),
+    ],
   })
 
-  const { active, activate, deactivate, error, library } = useWeb3React<Web3>()
-  console.log(library)
-
-  
+  const { active, activate, deactivate, error } = useWeb3React<Web3>()
 
   async function connect() {
     try {
