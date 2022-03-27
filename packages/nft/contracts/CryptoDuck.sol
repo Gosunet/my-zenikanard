@@ -26,7 +26,8 @@ contract CryptoDuck is ERC721URIStorage {
 
   // A function our user will hit to get their NFT.
   function makeAnEpicNFT(string memory srcTokenUri) public {
-     // Get the current tokenId, this starts at 0.
+    // require(balanceOf(msg.sender) == 0, 'Each address may only own one crypto duck');
+    // Get the current tokenId, this starts at 0.
     uint256 newItemId = _tokenIds.current();
 
      // Actually mint the NFT to the sender using msg.sender.
