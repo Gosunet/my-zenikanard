@@ -21,14 +21,14 @@ const Web3Connector = () => {
   }
 
   const ETHEREUM_TESTNET_PARAMS = {
-    chainId: '0x4',
-    chainName: 'Ethereum Rinkerby',
+    chainId: '0x5',
+    chainName: 'Ethereum Goerli',
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    rpcUrls: ['https://goerli.infura.io/v3/'],
     blockExplorerUrls: ['https://rinkey.etherscan.io'],
   }
 
@@ -60,23 +60,6 @@ const Web3Connector = () => {
   const isUnsupportedChainIdError = useMemo(() => {
     return error instanceof UnsupportedChainIdError
   }, [error])
-
-  // Working with Rinkerby now
-  // useEffect(() => {
-  //   if (isUnsupportedChainIdError) {
-  //     console.log('useEffect called')
-  //     injected.getProvider().then((provider) => {
-  //       provider
-  //         .request({
-  //           method: 'wallet_addEthereumChain',
-  //           params: [AVALANCHE_TESTNET_PARAMS],
-  //         })
-  //         .catch((error: any) => {
-  //           console.log(error)
-  //         })
-  //     })
-  //   }
-  // }, [AVALANCHE_TESTNET_PARAMS, connector, injected, isUnsupportedChainIdError])
 
   return (
     <div className={styles.connector}>

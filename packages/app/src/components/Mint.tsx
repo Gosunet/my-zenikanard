@@ -6,7 +6,7 @@ import svgExport from 'save-svg-as-png'
 import { ethers } from 'ethers'
 import axios from 'axios'
 
-const uploadSvgToPIPFS = async ({
+const uploadSvgToIPFS = async ({
   svg,
   name,
 }: {
@@ -35,7 +35,7 @@ type MintProps = {
 }
 
 export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
-  const CONTRACT_ADDRESS = '0x088b5560Fb7ba276892711356D1E9a659466029d'
+  const CONTRACT_ADDRESS = '0xeF6FFDA727B7b8e3440e14f480bF35777788F56a'
 
   const setupEventListener = async () => {
     // Most of this looks the same as our function askContractToMintNft
@@ -83,7 +83,7 @@ export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
         excludeCss: true,
       })
 
-      const cid = await uploadSvgToPIPFS({
+      const cid = await uploadSvgToIPFS({
         svg: svg.src,
         name: `nft ${new Date().toISOString()}`,
       })
