@@ -110,7 +110,7 @@ export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
       await nftTxn.wait()
 
       console.log(
-        `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`
+        `Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`
       )
       console.log(
         `https://testnets.opensea.io/collection/cryptoduck-kdjlvzgc9c`

@@ -29,7 +29,7 @@ const Web3Connector = () => {
       decimals: 18,
     },
     rpcUrls: ['https://goerli.infura.io/v3/'],
-    blockExplorerUrls: ['https://rinkey.etherscan.io'],
+    blockExplorerUrls: ['https://goerli.etherscan.io/'],
   }
 
   const injected = new InjectedConnector({
