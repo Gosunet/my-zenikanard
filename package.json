@@ -34,5 +34,6 @@
   },
   "nohoist": [
     "packages/lambda/**/*"
-  ]
+  ],
+  "version": "0.0.0"
 }
