@@ -3,7 +3,7 @@ const nftContract = await nftContractFactory.deploy();
 await nftContract.deployed();
 console.log("Contract deployed to:", nftContract.address);
 
-const svg = "https://theduckgallery.zenika.com/ducks/JuliaLehoux.png"
+const svg = "https://theduckgallery.zenika.com/ducks/jeanphibaconnais.png"
 
 // Call the function.
 let txn = await nftContract.makeAnEpicNFT(svg)
