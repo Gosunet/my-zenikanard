@@ -35,7 +35,7 @@ type MintProps = {
 }
 
 export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
-  const CONTRACT_ADDRESS = '0xeF6FFDA727B7b8e3440e14f480bF35777788F56a'
+  const CONTRACT_ADDRESS = '0x1d7E99B882b04136A43b867E313861f7c5112d8E'
 
   const setupEventListener = async () => {
     // Most of this looks the same as our function askContractToMintNft
@@ -58,7 +58,7 @@ export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
         connectedContract.on('NewNFTMinted', (from, tokenId) => {
           console.log(from, tokenId.toNumber())
           alert(
-            `Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+            `Hey there! We've minted your NFT and sent it to your wallet. You can see it in metasmask just import it ! Contract is ${CONTRACT_ADDRESS} and tokenId is ${tokenId}`
           )
         })
 
@@ -110,10 +110,7 @@ export const Mint: FC<MintProps> = ({ svgRef, setIsLoading }) => {
       await nftTxn.wait()
 
       console.log(
-        `Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`
-      )
-      console.log(
-        `https://testnets.opensea.io/collection/cryptoduck-kdjlvzgc9c`
+        `Mined, see transaction: https://sepolia.etherscan.io/tx/${nftTxn.hash}`
       )
       setIsLoading(false)
     } catch (error) {

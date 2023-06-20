@@ -21,15 +21,15 @@ const Web3Connector = () => {
   }
 
   const ETHEREUM_TESTNET_PARAMS = {
-    chainId: '0x5',
-    chainName: 'Ethereum Goerli',
+    chainId: '0xaa36a7',
+    chainName: 'Ethereum Sepolia',
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://goerli.infura.io/v3/'],
-    blockExplorerUrls: ['https://goerli.etherscan.io/'],
+    rpcUrls: ['https://sepolia.infura.io/v3/'],
+    blockExplorerUrls: ['https://sepolia.etherscan.io/'],
   }
 
   const injected = new InjectedConnector({
